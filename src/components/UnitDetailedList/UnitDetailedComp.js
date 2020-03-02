@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import UnitDetailedNum from "./UnitDetailedNum.js";
 import UnitDetailedContent from "./UnitDetailedContent";
 
+import Card from "react-bootstrap/Card";
+import Accordion from "react-bootstrap/Accordion";
+import Button from "react-bootstrap/Button";
+
 export default function UnitDetailedComp(props) {
   const [name, setName] = useState({
     set: props.unitname
@@ -13,16 +17,24 @@ export default function UnitDetailedComp(props) {
 
   return (
     <div>
-      <button
-        onClick={() => {
-          props.deleteUnit(props.index);
-        }}
-      >
-        Delete
-      </button>
-      <UnitDetailedNum num={props.unitnum} />
-      <p>{name.set}</p>
-      <UnitDetailedContent content={props.unitcontent} />
+      <Card>
+        <Accordion.Toggle as={Card.Header} eventKey="0">
+          {props.unitnum} - {name.set}{" "}
+          <Button
+            variant="outline-danger"
+            onClick={() => {
+              props.deleteUnit(props.index);
+            }}
+          >
+            Delete
+          </Button>
+        </Accordion.Toggle>
+        <Accordion.Collapse eventKey="0">
+          <Card.Body>
+            <UnitDetailedContent content={props.unitcontent} />
+          </Card.Body>
+        </Accordion.Collapse>
+      </Card>
     </div>
   );
 }

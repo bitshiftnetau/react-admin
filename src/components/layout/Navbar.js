@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
+import Navbar from "react-bootstrap/Navbar";
 
-export default function Navbar(props) {
+export default function LocalNavbar(props) {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="./home">
-          {props.user}
-        </a>
-      </nav>
+      <Navbar>
+        <Navbar.Brand href="#home">Navbar with text</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+            Signed in as: <a href="#login">{props.user}</a>
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Navbar>
     </div>
   );
 }

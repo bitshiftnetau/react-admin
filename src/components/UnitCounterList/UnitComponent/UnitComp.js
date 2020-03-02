@@ -4,6 +4,8 @@ import UnitNumber from "./UnitNumber";
 import CounterComp from "./Counter/CounterComp";
 import DueDateComp from "./DueDate/DueDateComp";
 
+import Card from "react-bootstrap/Card";
+
 export default function StudyCounter(props) {
   const [unitNum, setUnitNum] = useState({
     num: props.unitnum
@@ -14,10 +16,20 @@ export default function StudyCounter(props) {
   });
 
   return (
-    <div className="studyCounter">
-      <UnitNumber number={unitNum.num} />
-      <p>Name: {unitName.name}</p>
-      <CounterComp /> <DueDateComp />
-    </div>
+    <Card style={{ width: "18rem" }}>
+      <Card.Body>
+        <Card.Title></Card.Title>
+        <UnitNumber number={unitNum.num} />
+        <Card.Subtitle className="mb-2 text-muted">
+          <p>Name: {unitName.name}</p>
+        </Card.Subtitle>
+        <Card.Text>
+          <CounterComp /> <DueDateComp />
+        </Card.Text>
+        <Card.Link href="#">
+          FIXME: this should link to the detailed list section
+        </Card.Link>
+      </Card.Body>
+    </Card>
   );
 }
