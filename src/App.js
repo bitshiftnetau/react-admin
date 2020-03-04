@@ -1,11 +1,6 @@
 import React, { useState, setState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import LocalNavbar from "./components/layout/Navbar";
-import UnitList from "./components/UnitCounterList/UnitList";
-import WellnessScaleComp from "./components/WellnessScale/WellnessScaleComp";
-import DashboardGraphComp from "./components/DashboardGraph/DashboardGraphComp";
-import UnitDetailedListComp from "./components/UnitDetailedList/UnitDetailedListComp";
-import AddUnitComp from "./components/Modals/AddUnit/AddUnitComp";
 import SideNav, {
   Toggle,
   Nav,
@@ -14,9 +9,14 @@ import SideNav, {
   NavText
 } from "@trendmicro/react-sidenav";
 
+import DashboardSection from "./components/sections/DashboardSection";
+import UnitsSection from "./components/sections/UnitsSection";
+import WellbeingSection from "./components/sections/WellbeingSection";
+import WorkSection from "./components/sections/WorkSection";
+import FinancesSection from "./components/sections/FinancesSection";
+
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./app.css";
 import uuid from "uuid";
 import { state } from "./fakedata.js";
 
@@ -44,6 +44,10 @@ function App() {
     //FIXME: add calls to database here
   };
 
+  const sectionStyle = {
+    marginLeft: "5em"
+  };
+
   const deleteUnit = index => {
     const newUnitsList = [...units];
     newUnitsList.splice(index, 1);
@@ -54,66 +58,107 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-        <Route
-          render={({ location, history }) => (
-            <React.Fragment>
-              <SideNav
-                onSelect={selected => {
-                  const to = "/" + selected;
-                  /*if (location.pathname !== to) {
-                    history.push(to);
-                  }*/
-                }}
-              >
-                <SideNav.Toggle />
-                <SideNav.Nav defaultSelected="home">
-                  <NavItem eventKey="home">
-                    <NavIcon>
-                      <i
-                        className="fa fa-fw fa-home"
-                        style={{ fontSize: "1.75em" }}
-                      />
-                    </NavIcon>
-                    <NavText>Home</NavText>
-                  </NavItem>
-                  <NavItem eventKey="devices">
-                    <NavIcon>
-                      <i
-                        className="fa fa-fw fa-device"
-                        style={{ fontSize: "1.75em" }}
-                      />
-                    </NavIcon>
-                    <NavText>Devices</NavText>
-                  </NavItem>
-                </SideNav.Nav>
-              </SideNav>
-              <main>
-                <Route
-                  path="/"
-                  exact
-                  component={props => <DashboardGraphComp section={sections} />}
-                />
-                <Route
-                  path="/home"
-                  component={props => <DashboardGraphComp section={sections} />}
-                />
-                <Route
-                  path="/devices"
-                  component={props => <DashboardGraphComp section={sections} />}
-                />
-              </main>
-            </React.Fragment>
-          )}
-        />
-      </Router>
+      <div className="body-container">
+        <div className="topnav-container">
+          <LocalNavbar user={user} tier={tier} />
+        </div>
+        <Router>
+          <Route
+            render={({ location, history }) => (
+              <React.Fragment>
+                <SideNav
+                  onSelect={selected => {
+                    const to = "/" + selected;
+                    if (location.pathname !== to) {
+                      history.push(to);
+                    }
+                  }}
+                >
+                  <SideNav.Toggle />
+                  <SideNav.Nav defaultSelected="dashboard">
+                    <NavItem eventKey="dashboard">
+                      <NavIcon>
+                        <i
+                          className="fa fa-fw fa-home"
+                          style={{ fontSize: "1.75em" }}
+                        />
+                      </NavIcon>
+                      <NavText>Dashboard</NavText>
+                    </NavItem>
+                    <NavItem eventKey="units">
+                      <NavIcon>
+                        <i
+                          className="fa fa-fw fa-device"
+                          style={{ fontSize: "1.75em" }}
+                        />
+                      </NavIcon>
+                      <NavText>Units</NavText>
+                    </NavItem>
+                    <NavItem eventKey="wellbeing">
+                      <NavIcon>
+                        <i
+                          className="fa fa-fw fa-device"
+                          style={{ fontSize: "1.75em" }}
+                        />
+                      </NavIcon>
+                      <NavText>Wellbeing</NavText>
+                    </NavItem>
+                    <NavItem eventKey="work">
+                      <NavIcon>
+                        <i
+                          className="fa fa-fw fa-device"
+                          style={{ fontSize: "1.75em" }}
+                        />
+                      </NavIcon>
+                      <NavText>Work</NavText>
+                    </NavItem>
+                    <NavItem eventKey="finances">
+                      <NavIcon>
+                        <i
+                          className="fa fa-fw fa-device"
+                          style={{ fontSize: "1.75em" }}
+                        />
+                      </NavIcon>
+                      <NavText>Finances</NavText>
+                    </NavItem>
+                  </SideNav.Nav>
+                </SideNav>
 
-      <LocalNavbar user={user} tier={tier} />
-      <UnitList unitList={units} />
-      <WellnessScaleComp />
-
-      <AddUnitComp addUnit={addUnit} />
-      <UnitDetailedListComp unitList={units} deleteUnit={deleteUnit} />
+                <main>
+                  <Route path="/" exact component={() => <div></div>} />
+                  <Route
+                    path="/dashboard"
+                    component={() => (
+                      <DashboardSection
+                        style={sectionStyle}
+                        units={units}
+                        sections={sections}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/units"
+                    component={props => (
+                      <UnitsSection
+                        style={sectionStyle}
+                        units={units}
+                        addUnit={addUnit}
+                        deleteUnit={deleteUnit}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/wellbeing"
+                    component={props => (
+                      <WellbeingSection style={sectionStyle} />
+                    )}
+                  />
+                </main>
+              </React.Fragment>
+            )}
+          />
+        </Router>
+      </div>
     </div>
   );
 }

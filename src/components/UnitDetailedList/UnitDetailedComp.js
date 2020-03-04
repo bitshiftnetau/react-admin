@@ -18,7 +18,7 @@ export default function UnitDetailedComp(props) {
   return (
     <div>
       <Card>
-        <Accordion.Toggle as={Card.Header} eventKey="0">
+        <Accordion.Toggle as={Card.Header} eventKey={props.index}>
           {props.unitnum} - {name.set}{" "}
           <Button
             variant="outline-danger"
@@ -29,7 +29,7 @@ export default function UnitDetailedComp(props) {
             Delete
           </Button>
         </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
+        <Accordion.Collapse eventKey={props.index}>
           <Card.Body>
             <UnitDetailedContent content={props.unitcontent} />
           </Card.Body>
