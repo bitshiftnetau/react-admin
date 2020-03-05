@@ -1,13 +1,7 @@
 import React, { useState, setState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import LocalNavbar from "./components/layout/Navbar";
-import SideNav, {
-  Toggle,
-  Nav,
-  NavItem,
-  NavIcon,
-  NavText
-} from "@trendmicro/react-sidenav";
+import SideNavComp from "./components/SideNavComp/SideNavComp";
 
 import DashboardSection from "./components/sections/DashboardSection";
 import UnitsSection from "./components/sections/UnitsSection";
@@ -66,66 +60,13 @@ function App() {
           <Route
             render={({ location, history }) => (
               <React.Fragment>
-                <SideNav
-                  onSelect={selected => {
-                    const to = "/" + selected;
-                    if (location.pathname !== to) {
-                      history.push(to);
-                    }
-                  }}
-                >
-                  <SideNav.Toggle />
-                  <SideNav.Nav defaultSelected="dashboard">
-                    <NavItem eventKey="dashboard">
-                      <NavIcon>
-                        <i
-                          className="fa fa-fw fa-home"
-                          style={{ fontSize: "1.75em" }}
-                        />
-                      </NavIcon>
-                      <NavText>Dashboard</NavText>
-                    </NavItem>
-                    <NavItem eventKey="units">
-                      <NavIcon>
-                        <i
-                          className="fa fa-fw fa-device"
-                          style={{ fontSize: "1.75em" }}
-                        />
-                      </NavIcon>
-                      <NavText>Units</NavText>
-                    </NavItem>
-                    <NavItem eventKey="wellbeing">
-                      <NavIcon>
-                        <i
-                          className="fa fa-fw fa-device"
-                          style={{ fontSize: "1.75em" }}
-                        />
-                      </NavIcon>
-                      <NavText>Wellbeing</NavText>
-                    </NavItem>
-                    <NavItem eventKey="work">
-                      <NavIcon>
-                        <i
-                          className="fa fa-fw fa-device"
-                          style={{ fontSize: "1.75em" }}
-                        />
-                      </NavIcon>
-                      <NavText>Work</NavText>
-                    </NavItem>
-                    <NavItem eventKey="finances">
-                      <NavIcon>
-                        <i
-                          className="fa fa-fw fa-device"
-                          style={{ fontSize: "1.75em" }}
-                        />
-                      </NavIcon>
-                      <NavText>Finances</NavText>
-                    </NavItem>
-                  </SideNav.Nav>
-                </SideNav>
-
+                <SideNavComp location={location} history={history} />
                 <main>
-                  <Route path="/" exact component={() => <div></div>} />
+                  <Route
+                    exact
+                    path="/"
+                    render={() => <Redirect to="dashboard" />}
+                  />
                   <Route
                     path="/dashboard"
                     component={() => (
