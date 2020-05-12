@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import JsonPathPickerComp from "../JsonPathPicker/JsonPathPickerComp.js";
 import { state } from '../../fakedata.js';
 
 export default function TlogPathfinderSection() {
 
     const [state, setState] = useState({
-        json: {"test": "test"},
+        json: null,
         path: null,
         pathText: ''
     });
 
     var _p = {
-        json: JSON.stringify({"test": "test"}),
+        json: state.json,
         onChoose: (path) => setState({path, pathText:path}),
         path: state.path,
-        showOnly: ""
+        showOnly: false 
     };
 
     var _s = {
@@ -23,6 +23,7 @@ export default function TlogPathfinderSection() {
 
     var _text = ''
     const generate = () => {
+        console.log("_text.trim()", _text.trim());
         setState({
             json: _text.trim() || '""'
         })
@@ -36,16 +37,20 @@ export default function TlogPathfinderSection() {
 
     return (
         <div>
-            (<div>
-            <div style={{width:'29%',height:800,float:'left',boxSizing:'border-box',paddingLeft:'30px',borderRight:'1px solid #888'}}>
+            <div>
+            <div style={{width:'29%',height:800,float:'left',boxSizing:'border-box',paddingLeft:'100px',borderRight:'1px solid #888'}}>
                 <textarea
                     style={{width:'80%',height:300}}
-                    onChange={e=> _text = e.target.value}
+                    onChange={(e)=> {
+                        _text = e.target.value
+                        console.log(e.target.value)
+                        }
+                    }
                 />
                 <p><button style={{width:'80%'}} onClick={generate}>generate</button></p>
                 <textarea
-                    style={{width:'80%',minHeight:'50px',boxSizing:'border-box',border:'1px solid #108ee9',padding:'10px'}}
-                    onInput={(e)=> {
+                    style={{width:'80%',minHeight:'100px',boxSizing:'border-box',border:'1px solid #108ee9',padding:'10px'}}
+                    onChange={(e)=> {
                         setState({
                             pathText: e.target.value
                         })
@@ -59,7 +64,7 @@ export default function TlogPathfinderSection() {
                     P={_p} S={_s}
                 />
             </div>
-        </div>)
+        </div>
         </div>
     )
 }
