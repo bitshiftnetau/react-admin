@@ -23,9 +23,8 @@ export default function StudyCounter(props) {
         <Card.Subtitle className="mb-2 text-muted">
           <p>Name: {unitName.name}</p>
         </Card.Subtitle>
-        <Card.Text>
-          <CounterComp /> <DueDateComp />
-        </Card.Text>
+        <CounterComp /> 
+        <DueDateComp />
         <Card.Link href="#">
           FIXME: this should link to the detailed list section
         </Card.Link>

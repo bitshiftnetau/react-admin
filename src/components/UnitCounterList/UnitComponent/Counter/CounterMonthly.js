@@ -7,7 +7,7 @@ export default function CounterMonthly() {
 
   return (
     <div>
-      <p>daily hours: {counterMonthly.counter}</p>
+      <div>daily hours: {counterMonthly.counter}</div>
     </div>
   );
 }

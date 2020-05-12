@@ -1,0 +1,3 @@
+[submodule "src/components/JsonPathPicker"]
+	path = src/components/JsonPathPicker
+	url = https://github.com/bitshiftnetau/react-json-path-picker.git

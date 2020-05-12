@@ -21,6 +21,7 @@ export default function SideNavComp(props) {
         }}
       >
         <SideNav.Toggle />
+
         <SideNav.Nav defaultSelected="dashboard">
           <NavItem eventKey="dashboard">
             <NavIcon>
@@ -64,6 +65,16 @@ export default function SideNavComp(props) {
             </NavIcon>
             <NavText>Finances</NavText>
           </NavItem>
+          <NavItem eventKey="testing">
+            <NavIcon>
+              <i
+                className="fa fa-fw fa-device"
+                style={{ fontSize: "1.75em" }}
+              />
+            </NavIcon>
+            <NavText>Tlog Pathfinder</NavText>
+          </NavItem>
+ 
         </SideNav.Nav>
       </SideNav>
     </div>

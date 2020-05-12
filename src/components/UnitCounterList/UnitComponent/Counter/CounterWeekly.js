@@ -7,7 +7,7 @@ export default function CounterWeekly() {
 
   return (
     <div>
-      <p>weekly hours: {counterWeekly.counter}</p>
+      <div>weekly hours: {counterWeekly.counter}</div>
     </div>
   );
 }

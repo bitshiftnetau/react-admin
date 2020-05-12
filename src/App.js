@@ -8,11 +8,32 @@ import UnitsSection from "./components/sections/UnitsSection";
 import WellbeingSection from "./components/sections/WellbeingSection";
 import WorkSection from "./components/sections/WorkSection";
 import FinancesSection from "./components/sections/FinancesSection";
+import TlogPathFinderSection from "./components/sections/TlogPathfinderSection.js";
+
+import JsonPathPickerComp from "./components/JsonPathPicker/JsonPathPickerComp";
 
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import uuid from "uuid";
 import { state } from "./fakedata.js";
+
+var json_object = {
+  "test0": "test0",
+  "test1": "test1",
+  "array0": [
+    {"array0_el0": "0"},
+    {"array0_el1": "1"},
+    {"array0_el2": "2"},
+    {"array0_el3": "3"},
+    {"array0_el4": "4"},
+  ]
+}
+
+const tlog_path_picker_state = {
+  json: "",
+  path: "",
+  pathText: ''
+}
 
 function App() {
   // useState() returns an array
@@ -27,6 +48,11 @@ function App() {
 
   const [units, setUnits] = useState(state.units);
   const [sections, setSections] = useState(state.sections);
+
+  /*
+  const [jsonPickerState, setJsonPickerState] = useState(json_picker_state);
+  const [jsonPickerProps, setJsonPickerProps] = useState(json_picker_props);
+  */
 
   var addUnit = (unitnum, unitname, unitcontent) => {
     const newUnits = [
@@ -92,6 +118,12 @@ function App() {
                     path="/wellbeing"
                     component={props => (
                       <WellbeingSection style={sectionStyle} />
+                    )}
+                  />
+                  <Route
+                    path="/testing"
+                    component={props => (
+                     <TlogPathFinderSection />
                     )}
                   />
                 </main>
