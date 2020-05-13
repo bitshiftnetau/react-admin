@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import JsonPathPickerComp from "../JsonPathPicker/JsonPathPickerComp.js";
+import JsonPathPickerComp_memo from "../JsonPathPicker/JsonPathPickerComp.js";
 import { state } from '../../fakedata.js';
 
 export default function TlogPathfinderSection() {
@@ -43,7 +43,7 @@ export default function TlogPathfinderSection() {
                     style={{width:'80%',height:300}}
                     onChange={(e)=> {
                         _text = e.target.value
-                        console.log(e.target.value)
+                        //console.log(e.target.value)
                         }
                     }
                 />
@@ -60,7 +60,7 @@ export default function TlogPathfinderSection() {
                 <p><button style={{width:'80%'}} onClick={mapPath}>map path</button></p>
             </div>
             <div style={{width:'70%',float:'left',boxSizing:'border-box',paddingLeft:'50px'}}>
-                <JsonPathPickerComp
+                <JsonPathPickerComp_memo
                     P={_p} S={_s}
                 />
             </div>
