@@ -98,7 +98,7 @@ function App() {
               
 
               <OutsideClickHandler
-                onOutsideClick={() => {
+                onClickOutside={() => {
                   setNavbarState({ expanded: false });
                 }}
               >
@@ -110,8 +110,8 @@ function App() {
                         }
                       }}
                       expanded={navbarState.expanded}
-                      onToggle={() => {
-                        setNavbarState({expanded: true});
+                      onToggle={(expanded) => {
+                        setNavbarState({expanded});
                       }}
                     >
 
