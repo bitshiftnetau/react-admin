@@ -1,5 +1,6 @@
 import React, { useState, setState } from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import OutsideClickHandler from 'react-outside-click-handler';
 import LocalNavbar from "./components/layout/Navbar";
 import SideNavComp from "./components/SideNavComp/SideNavComp";
 
@@ -11,6 +12,15 @@ import FinancesSection from "./components/sections/FinancesSection";
 import TlogPathFinderSection from "./components/sections/TlogPathfinderSection.js";
 
 import JsonPathPickerComp from "./components/JsonPathPicker/JsonPathPickerComp";
+
+import SideNav, {
+  Toggle,
+  Nav,
+  NavItem,
+  NavIcon,
+  NavText
+} from "@trendmicro/react-sidenav";
+
 
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -78,15 +88,84 @@ function App() {
 
   return (
     <div className="App">
-      <div className="body-container">
-        <div className="topnav-container">
-          <LocalNavbar user={user} tier={tier} />
-        </div>
         <Router>
           <Route
             render={({ location, history }) => (
               <React.Fragment>
-                <SideNavComp location={location} history={history} />
+              
+
+              <OutsideClickHandler
+                onClickOutside={() => {
+                  this.setState({ expanded: false });
+                }}
+              >
+                    <SideNav
+                      onSelect={selected => {
+                        const to = "/" + selected;
+                        if (location.pathname !== to) {
+                          history.push(to);
+                        }
+                      }}
+                    >
+
+                      <SideNav.Toggle />
+
+                        <SideNav.Nav defaultSelected="dashboard">
+                          <NavItem eventKey="dashboard">
+                              <NavIcon>
+                                <i className="fa fa-fw fa-home" style={{ fontSize: "1.75em" }} />
+                              </NavIcon>
+                            <NavText>Dashboard</NavText>
+                          </NavItem>
+                          <NavItem eventKey="units">
+                              <NavIcon>
+                                <i
+                                  className="fa fa-fw fa-device"
+                                  style={{ fontSize: "1.75em" }}
+                                />
+                              </NavIcon>
+                            <NavText>Units</NavText>
+                          </NavItem>
+                          <NavItem eventKey="wellbeing">
+                              <NavIcon>
+                                <i
+                                  className="fa fa-fw fa-device"
+                                  style={{ fontSize: "1.75em" }}
+                                />
+                              </NavIcon>
+                            <NavText>Wellbeing</NavText>
+                          </NavItem>
+                          <NavItem eventKey="work">
+                              <NavIcon>
+                                <i
+                                  className="fa fa-fw fa-device"
+                                  style={{ fontSize: "1.75em" }}
+                                />
+                              </NavIcon>
+                            <NavText>Work</NavText>
+                          </NavItem>
+                          <NavItem eventKey="finances">
+                              <NavIcon>
+                                <i
+                                  className="fa fa-fw fa-device"
+                                  style={{ fontSize: "1.75em" }}
+                                />
+                              </NavIcon>
+                            <NavText>Finances</NavText>
+                          </NavItem>
+                          <NavItem eventKey="testing">
+                              <NavIcon>
+                                <i
+                                  className="fa fa-fw fa-device"
+                                  style={{ fontSize: "1.75em" }}
+                                />
+                              </NavIcon>
+                            <NavText>Tlog Pathfinder</NavText>
+                          </NavItem>
+
+                         </SideNav.Nav>
+                      </SideNav>
+                    </OutsideClickHandler>
                 <main>
                   <Route
                     exact
@@ -131,9 +210,12 @@ function App() {
             )}
           />
         </Router>
-      </div>
     </div>
   );
 }
 
 export default App;
+
+/*
+                <SideNavComp location={location} history={history} />
+                */
