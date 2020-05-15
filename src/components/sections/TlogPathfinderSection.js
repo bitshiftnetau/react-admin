@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import JsonPathPickerComp from "../JsonPathPicker/JsonPathPickerComp.js";
-import { state } from '../../fakedata.js';
 import Button from 'react-bootstrap/Button';
+import { FilePond, File, registerPlugin } from 'react-filepond'
+import 'filepond/dist/filepond.min.css';
+
+var json_string = JSON.stringify({
+    "name":"John",
+    "age":30,
+    "cars": [
+      { "name":"Ford", "models":[ "Fiesta", "Focus", "Mustang" ] },
+      { "name":"BMW", "models":[ "320", "X3", "X5" ] },
+      { "name":"Fiat", "models":[ "500", "Panda" ] }
+    ]
+});
 
 export default function TlogPathfinderSection() {
    
-    console.log("render: TlogPathFinderSection");
     const [state, setState] = useState({
         json: null,
         path: null,
         pathText: '',
     });
-
-    /*
-    var _p = {
-        json: state.json,
-        onChoose: (path) => setState({path, pathText:path}),
-        path: state.path,
-        showOnly: false 
-    };
-    
-    var _s = {
-        choosen: ""
-    };
-    */
 
     const select = () => {
         console.log("clicked");
@@ -31,15 +28,22 @@ export default function TlogPathfinderSection() {
 
     var _text = ''
     const generate = () => {
-        if(_text.length > 0){
+        /*if(_text.length > 0){
             setState({
                 json: _text.trim() || '""'
             })
-        }
+        }*/
+        
+    }
+
+    const xml2json = (file) => {
+        console.log("xml2json");
+        console.log("filename", file.filename);
     }
 
     return (
         <div>
+            <FilePond name={"file"} server="https://localhost:8090/upload" onerror={(error) => (console.error(error))} onaddfilestart={(file) => (xml2json(file))}/>
             <div>
             <div style={{width:'29%',height:800,float:'left',boxSizing:'border-box',paddingLeft:'6em', paddingTop:"2em",borderRight:'1px solid #888'}}>
                 <textarea

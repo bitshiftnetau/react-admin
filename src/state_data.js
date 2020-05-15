@@ -4,11 +4,16 @@ const state_data = {
   navbar: {
     expanded: false
   },
-  jsonPathPicker: {
+  json_path_picker: {
 
   },
-  backendConfig: {
+  backend_config: {
 
+  },
+  section_state: {
+    style: {
+      marginLeft: "5em"
+    }
   }
 };
 

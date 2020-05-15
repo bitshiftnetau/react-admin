@@ -1,5 +1,6 @@
 import React, { useState, setState } from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { StickyContainer, Sticky } from 'react-sticky';
 import OutsideClickHandler from 'react-outside-click-handler';
 import LocalNavbar from "./components/layout/Navbar";
 import SideNavComp from "./components/SideNavComp/SideNavComp";
@@ -12,6 +13,7 @@ import FinancesSection from "./components/sections/FinancesSection";
 import TlogPathFinderSection from "./components/sections/TlogPathfinderSection.js";
 
 import JsonPathPickerComp from "./components/JsonPathPicker/JsonPathPickerComp";
+
 
 import SideNav, {
   Toggle,
@@ -28,17 +30,7 @@ import uuid from "uuid";
 import { state } from "./fakedata.js";
 import { state_data } from "./state_data";
 
-var json_object = {
-  "test0": "test0",
-  "test1": "test1",
-  "array0": [
-    {"array0_el0": "0"},
-    {"array0_el1": "1"},
-    {"array0_el2": "2"},
-    {"array0_el3": "3"},
-    {"array0_el4": "4"},
-  ]
-}
+
 
 const tlog_path_picker_state = {
   json: "",
@@ -61,6 +53,7 @@ function App() {
   const [sections, setSections] = useState(state.sections);
 
   const [navbarState, setNavbarState] = useState(state_data.navbar);
+  const [sectionState, setSectionState] = useState(state_data.section_state);
 
   /*
   const [jsonPickerState, setJsonPickerState] = useState(json_picker_state);
@@ -77,10 +70,6 @@ function App() {
     //FIXME: add calls to database here
   };
 
-  const sectionStyle = {
-    marginLeft: "5em"
-  };
-
   const deleteUnit = index => {
     const newUnitsList = [...units];
     newUnitsList.splice(index, 1);
@@ -89,78 +78,63 @@ function App() {
     //FIXME: add calls to database here
   };
 
+  const shiftSection = () => {
+    setSectionState({
+      style:{
+        marginLeft: "16em"
+      }
+    });
+    console.log("shift section");
+  }
+
   return (
     <div className="App">
+
         <Router>
           <Route
             render={({ location, history }) => (
-              <React.Fragment>
-              
-
-              <OutsideClickHandler
-                onOutsideClick={() => {
-                  setNavbarState({ expanded: false });
-                }}
-              >
+             
+               <OutsideClickHandler
+                  onOutsideClick={() => {
+                    if(navbarState.expanded == true){
+                      setNavbarState({ expanded: false });
+                      setSectionState({
+                        style:{
+                          marginLeft: "5em"
+                        }
+                      });
+                    }
+                  }}
+                >
+            
                     <SideNav
                       onSelect={selected => {
                         const to = "/" + selected;
                         if (location.pathname !== to) {
                           history.push(to);
                         }
+                        setNavbarState({expanded: false});
+                        setSectionState({style:{
+                          marginLeft: "5em"
+                        }});
                       }}
                       expanded={navbarState.expanded}
-                      onToggle={() => {
-                        setNavbarState({expanded: true});
+                      onToggle={(expanded) => {
+                        if(expanded == true){
+                          shiftSection();
+                        } else {
+                          setSectionState({style:{
+                            marginLeft: "5em"
+                          }});                         
+                        }
+                        setNavbarState({expanded});
                       }}
                     >
 
                       <SideNav.Toggle />
+                         <SideNav.Nav defaultSelected="tlog-utility">
 
-                        <SideNav.Nav defaultSelected="dashboard">
-                          <NavItem eventKey="dashboard">
-                              <NavIcon>
-                                <i className="fa fa-fw fa-home" style={{ fontSize: "1.75em" }} />
-                              </NavIcon>
-                            <NavText>Dashboard</NavText>
-                          </NavItem>
-                          <NavItem eventKey="units">
-                              <NavIcon>
-                                <i
-                                  className="fa fa-fw fa-device"
-                                  style={{ fontSize: "1.75em" }}
-                                />
-                              </NavIcon>
-                            <NavText>Units</NavText>
-                          </NavItem>
-                          <NavItem eventKey="wellbeing">
-                              <NavIcon>
-                                <i
-                                  className="fa fa-fw fa-device"
-                                  style={{ fontSize: "1.75em" }}
-                                />
-                              </NavIcon>
-                            <NavText>Wellbeing</NavText>
-                          </NavItem>
-                          <NavItem eventKey="work">
-                              <NavIcon>
-                                <i
-                                  className="fa fa-fw fa-device"
-                                  style={{ fontSize: "1.75em" }}
-                                />
-                              </NavIcon>
-                            <NavText>Work</NavText>
-                          </NavItem>
-                          <NavItem eventKey="finances">
-                              <NavIcon>
-                                <i
-                                  className="fa fa-fw fa-device"
-                                  style={{ fontSize: "1.75em" }}
-                                />
-                              </NavIcon>
-                            <NavText>Finances</NavText>
-                          </NavItem>
-                          <NavItem eventKey="testing">
+                          <NavItem eventKey="tlog-utility">
                               <NavIcon>
                                 <i
                                   className="fa fa-fw fa-device"
@@ -171,58 +145,32 @@ function App() {
                           </NavItem>
 
                          </SideNav.Nav>
+                        
+ 
                       </SideNav>
                     </OutsideClickHandler>
+
+            )}
+          />
                 <main>
                   <Route
                     exact
                     path="/"
-                    render={() => <Redirect to="dashboard" />}
+                    render={() => <Redirect to="tlog-utility" />}
                   />
+
                   <Route
-                    path="/dashboard"
-                    component={() => (
-                      <DashboardSection
-                        style={sectionStyle}
-                        units={units}
-                        sections={sections}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/units"
+                    path="/tlog-utility"
                     component={props => (
-                      <UnitsSection
-                        style={sectionStyle}
-                        units={units}
-                        addUnit={addUnit}
-                        deleteUnit={deleteUnit}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/wellbeing"
-                    component={props => (
-                      <WellbeingSection style={sectionStyle} />
-                    )}
-                  />
-                  <Route
-                    path="/testing"
-                    component={props => (
+
                      <TlogPathFinderSection />
                     )}
                   />
                 </main>
-              </React.Fragment>
-            )}
-          />
         </Router>
-    </div>
+
+   </div>
   );
 }
 
 export default App;
-
-/*
-                <SideNavComp location={location} history={history} />
-                */
