@@ -3,6 +3,10 @@ import JsonPathPickerComp from "../JsonPathPicker/JsonPathPickerComp.js";
 import Button from 'react-bootstrap/Button';
 import { FilePond, File, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+registerPlugin(FilePondPluginFileValidateType);
+
+
 
 var json_string = JSON.stringify({
     "name":"John",
@@ -39,11 +43,12 @@ export default function TlogPathfinderSection() {
     const xml2json = (file) => {
         console.log("xml2json");
         console.log("filename", file.filename);
+       
     }
 
     return (
         <div>
-            <FilePond name={"file"} server="https://localhost:8090/upload" onerror={(error) => (console.error(error))} onaddfilestart={(file) => (xml2json(file))}/>
+            <FilePond name={"file"} server="https://localhost:8090/upload_xml" onerror={(error) => (console.error(error))} acceptedFileTypes={['text/xml']}/>
             <div>
             <div style={{width:'29%',height:800,float:'left',boxSizing:'border-box',paddingLeft:'6em', paddingTop:"2em",borderRight:'1px solid #888'}}>
                 <textarea
