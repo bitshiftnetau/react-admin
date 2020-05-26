@@ -10,7 +10,7 @@ import UnitsSection from "./components/sections/UnitsSection";
 import WellbeingSection from "./components/sections/WellbeingSection";
 import WorkSection from "./components/sections/WorkSection";
 import FinancesSection from "./components/sections/FinancesSection";
-import TlogPathFinderSection from "./components/sections/TlogPathfinderSection.js";
+import TlogPathFinderSectionMemo from "./components/sections/TlogPathfinderSection.js";
 
 import JsonPathPickerComp from "./components/JsonPathPicker/JsonPathPickerComp";
 
@@ -89,86 +89,9 @@ function App() {
 
   return (
     <div className="App">
-
-        <Router>
-          <Route
-            render={({ location, history }) => (
-             
-               <OutsideClickHandler
-                  onOutsideClick={() => {
-                    if(navbarState.expanded == true){
-                      setNavbarState({ expanded: false });
-                      setSectionState({
-                        style:{
-                          marginLeft: "5em"
-                        }
-                      });
-                    }
-                  }}
-                >
-            
-                    <SideNav
-                      onSelect={selected => {
-                        const to = "/" + selected;
-                        if (location.pathname !== to) {
-                          history.push(to);
-                        }
-                        setNavbarState({expanded: false});
-                        setSectionState({style:{
-                          marginLeft: "5em"
-                        }});
-                      }}
-                      expanded={navbarState.expanded}
-                      onToggle={(expanded) => {
-                        if(expanded == true){
-                          shiftSection();
-                        } else {
-                          setSectionState({style:{
-                            marginLeft: "5em"
-                          }});                         
-                        }
-                        setNavbarState({expanded});
-                      }}
-                    >
-
-                      <SideNav.Toggle />
-                         <SideNav.Nav defaultSelected="tlog-utility">
-
-                          <NavItem eventKey="tlog-utility">
-                              <NavIcon>
-                                <i
-                                  className="fa fa-fw fa-device"
-                                  style={{ fontSize: "1.75em" }}
-                                />
-                              </NavIcon>
-                            <NavText>Tlog Pathfinder</NavText>
-                          </NavItem>
-
-                         </SideNav.Nav>
-                        
- 
-                      </SideNav>
-                    </OutsideClickHandler>
-
-            )}
-          />
-                <main>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => <Redirect to="tlog-utility" />}
-                  />
-
-                  <Route
-                    path="/tlog-utility"
-                    component={props => (
-
-                     <TlogPathFinderSection />
-                    )}
-                  />
-                </main>
-        </Router>
-
+      <div>
+        <TlogPathFinderSectionMemo style={{"overflow": "auto"}}/>
+      </div>
    </div>
   );
 }
