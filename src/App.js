@@ -84,7 +84,6 @@ function App() {
         marginLeft: "16em"
       }
     });
-    console.log("shift section");
   }
 
   return (

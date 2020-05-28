@@ -8,6 +8,8 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import ResponseToast from "../Toast/UpdateResponseToastComp";
 import UpdateFieldsComp from "../UpdateFields/UpdateFieldsComp";
 import PathDisplayComp from "../PathDisplay/PathDisplayComp";
+import ConfigFileDisplay from "../ConfigFileDisplay/ConfigFileDisplayComp"
+import config from "../../config"
 
 
 registerPlugin(FilePondPluginFileValidateType);
@@ -28,18 +30,18 @@ function TlogPathfinderSection() {
         json: null,
         path: null,
         pathText: '',
-        filename: ''
+        filename: '',
+        configFile: ''
     });
 
 
- 
-    var server_address = "https://localhost:8090";
-    var post_xml = "/xml";
-    var post_json = "/json";
+    var server_address = config.app_info.server_address;
+    var post_xml = config.app_info.endpoints.xml;
+    var post_json = config.app_info.endpoints.json;
+    var post_config = config.app_info.endpoints.config;
    
     const fetch_json = (file_filename) => {
         
-        console.log("fetch_json", file_filename);
         var url = `${server_address}${post_json}`;
 
         setState({
@@ -59,10 +61,30 @@ function TlogPathfinderSection() {
             })
             .then(res => res.text())
             .then(data => {
-                console.log("fetch_json", data);
                 setState({json: data}); 
             })
     };
+
+    const fetch_config = () => {
+
+        var url = `${server_address}${post_config}`;
+         fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                    "request": "pleaseCanHasConfig?"
+                })            
+            })
+            .then(res => res.text())
+            .then(data => {
+                setState({configFile: data}); 
+            })       
+    }
 
     return (
         <div>
@@ -74,25 +96,25 @@ function TlogPathfinderSection() {
                 acceptedFileTypes={['text/xml']}
                 onprocessfile={(error, files) => {
                     if(!error){
-                        console.log(files);
                             fetch_json(files.filename) 
                         }
                     }
                 }
             />
             <UpdateFieldsComp />
-            <PathDisplayComp props={state.pathText} />
+            <ConfigFileDisplay configFile={state.configFile}/>
+            <PathDisplayComp onUpdate={fetch_config} pathText={state.pathText} />
             <JsonPathPickerComp
                 json={state.json}
                 path={state.path}
-                onChoose={(path)=> setState({path, pathText:path})}
+                onChoose={(path, json)=> {setState({pathText:path, json: json})}}
                 showOnly={false} 
             />
         </div>
     )
 }
-var TlogPathfinderSectionMemo;
 
+var TlogPathfinderSectionMemo;
 export default TlogPathfinderSectionMemo = React.memo(TlogPathfinderSection);
 /*
 

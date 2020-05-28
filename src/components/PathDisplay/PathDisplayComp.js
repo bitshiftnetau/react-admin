@@ -1,43 +1,83 @@
 import React, { useState } from 'react'
-import { Button } from "react-bootstrap"
-
+import { Button, Dropdown } from "react-bootstrap"
+import config from "../../config"
 
 export default function PathDisplayComp(props) {
 
-    const [state, setState] = useState({pathText: props.pathText})
+    var server_address = config.app_info.server_address;
+    var post_path = config.app_info.endpoints.path;
 
-    var server_address = "https://localhost:8090";
-    var post_path = "/path";
-    
+    var value_name;
+
+    const [state, setState] = useState({
+       value_type: '',
+       name: "Data-type",
+    });
+
     const update_path = () => {
-        var url = `${server_address}${post_path}`;
-        fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify({
-                "path": state.pathText // body data type must match "Content-Type" header)
+        if(props.pathText && value_name && state.value_type){
+            var url = `${server_address}${post_path}`;
+
+            fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                    "newproperty": {
+                        "new_value": value_name,
+                        "new_path": props.pathText,
+                        "new_type": state.value_type
+                    }  // body data type must match "Content-Type" header)
+                })
             })
-        })
-        .then(res => res.text())
-        .then(data => {
-            console.log("path updated");
-        })
+            .then(res => res.text())
+            .then(data => {
+                console.log(data);
+            })
+        }
     }
 
-
     return (
-        <div style={{width:'50%',float:'left',boxSizing:'border-box',paddingLeft:'2em', paddingTop:"2em"}}>
+        <div style={{width:'50%',float:'left',boxSizing:'border-box',paddingLeft:'2em', paddingTop:"1em"}}>
+
                 <input
-                    style={{width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                    style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
                     value={props.pathText || ''}
                 readOnly />
-                <div>
-                    <Button style={{marginBottom: "1em", marginTop: "1em"}} onClick={update_path}>Import selected value</Button>
+                <div style= {{width: '80%', display: 'flex', justifyContent: 'left'}} >
+                    <input style={{marginRight: '0.5em'}} 
+                        onChange={(e) => {
+                            value_name = e.target.value
+                        }}
+                    />
+                    <Dropdown style={{marginRight: '0.5em'}}>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic" name="test">
+                            {state.name}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={(e) => {
+                                    e.preventDefault();
+                                    setState({
+                                        value_type: "number",
+                                        name: "Number"
+                                    })
+                                }}
+                            >Number</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => {
+                                    e.preventDefault();
+                                    setState({
+                                        value_type: "string",
+                                        name: "String"
+                                    })
+                                }}
+                            >String</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Button onClick={update_path}>Import selected value</Button>
                 </div>
         </div>
     )
