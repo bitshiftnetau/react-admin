@@ -36,20 +36,28 @@ export default function PathDisplayComp(props) {
             })
             .then(res => res.text())
             .then(data => {
-                console.log(data);
+                props.showToast && props.showToast();
+                props.loadConfig && props.loadConfig()
             })
         }
     }
 
     return (
-        <div style={{width:'50%',float:'left',boxSizing:'border-box',paddingLeft:'2em', paddingTop:"1em"}}>
+        <div style={{width:'40%',float:'left',boxSizing:'border-box',paddingLeft:'2em', paddingTop:"1em", marginBottom: "1em"}}>
 
                 <input
-                    style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                    style={{marginBottom: '0.5em', width:'90%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
                     value={props.pathText || ''}
                 readOnly />
-                <div style= {{width: '80%', display: 'flex', justifyContent: 'left'}} >
-                    <input style={{marginRight: '0.5em'}} 
+                <div style= {{width: '100%', display: 'flex', justifyContent: 'left'}} >
+                    <label style={{
+                        marginBottom: "0px", 
+                        marginBottom: "0px",
+                        marginRight: "0.5em",
+                        marginTop: "0.3em"
+                    }}
+                    for="column-name">Sheet Col Name: </label>
+                    <input name="column-name" style={{marginRight: '0.5em'}} 
                         onChange={(e) => {
                             value_name = e.target.value
                         }}

@@ -2,22 +2,13 @@ import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import config from "../../config"
 
-export default function UpdateFieldsComp() {
+export default function UpdateFieldsComp(props) {
 
     var server_address = config.app_info.server_address;
     var post_sheetinfo = config.app_info.endpoints.sheetinfo;
     var post_tlogname = config.app_info.endpoints.tlogname;
     var post_receiptline = config.app_info.endpoints.receiptline;
     var post_resultcols = config.app_info.endpoints.resultcols;
-
-    const [input, setInput] = useState({
-        tlogname: '',
-        reportcol: '',
-        passfailcol: '',
-        sheetaddress: '',
-        sheetname: '',
-        receiptline: ''       
-    })
 
     var tlogname = '';
     var reportcol = '';
@@ -42,8 +33,7 @@ export default function UpdateFieldsComp() {
     }
 
     const form_container_style = {
-        width: '95%', 
-        margin: '0.5em'
+        width: '100%' 
     }
 
     const label_container_style = {
@@ -51,7 +41,7 @@ export default function UpdateFieldsComp() {
     }
     
     const component_style = {
-        width: '20%', 
+        width: '30%', 
         float:'right', 
         paddingTop: '1em'
     }
@@ -74,7 +64,7 @@ export default function UpdateFieldsComp() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                props.loadConfig && props.loadConfig();
             })
         }
     }
@@ -97,7 +87,7 @@ export default function UpdateFieldsComp() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                props.loadConfig && props.loadConfig();
             })
         }
     }
@@ -120,7 +110,7 @@ export default function UpdateFieldsComp() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                props.loadConfig && props.loadConfig();
             })
         }
     }
@@ -142,7 +132,7 @@ export default function UpdateFieldsComp() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                props.loadConfig && props.loadConfig();
             })
         }
     }
@@ -152,13 +142,21 @@ export default function UpdateFieldsComp() {
             <div style={component_style} className="input-fields">
                 <div style={form_container_style}>
                    <div style={input_container_style} className="sheetinfo">
-                       <label style={label_container_style} htmlFor="sheetaddress">Sheet Address: </label>
-                       <input onChange={(e) => {sheetaddress = e.target.value}} style={input_style} name="sheetaddress" required>
+                   <div>Sheet Address:</div>   
+                   <input
+                        style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                        value={props.runtime_sheet_info.spreadsheet_id || ''}
+                    readOnly />
+                       <input onChange={(e) => {sheetaddress = e.target.value}} style={input_style} name="sheetaddress" required placeholder="input new address">
                        </input>
                    </div> 
                    <div style={input_container_style} className="sheetinfo">
-                       <label style={label_container_style} htmlFor="sheetname">Sheet Name: </label>
-                       <input onChange={(e) => {sheetname = e.target.value}} style={input_style} name="sheetname" required>
+                   <div>Sheet Name:</div>
+                   <input
+                        style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                        value={props.runtime_sheet_info.sheet_name || ''}
+                    readOnly />
+                       <input onChange={(e) => {sheetname = e.target.value}} style={input_style} name="sheetname" required placeholder="input new name">
                        </input>
                    </div>
                    <div style={button_container_style}>
@@ -167,13 +165,21 @@ export default function UpdateFieldsComp() {
                 </div>
                 <div style={form_container_style}>
                    <div style={input_container_style} className="resultcolsinfo">
-                      <label style={label_container_style} htmlFor="passfailcol">Pass/Fail Column: </label>
-                       <input onChange={(e) => {passfailcol = e.target.value}}  style={input_style} name="passfailcol" required>
-                       </input>
+                   <div>Pass/Fail Column:</div>
+                        <input
+                            style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.report_columns.results_name || ''}
+                        readOnly />
+                        <input onChange={(e) => {passfailcol = e.target.value}}  style={input_style} name="passfailcol" required placeholder="input runtime sheet column">
+                        </input>
                    </div> 
                    <div style={input_container_style} className="resultcolsinfo">
-                       <label style={label_container_style} htmlFor="reportcol">Report Column: </label>
-                       <input  onChange={(e) => {reportcol = e.target.value}} style={input_style} name="reportcol" required>
+                   <div>Report Column:</div>
+                        <input
+                            style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.report_columns.report_name || ''}
+                        readOnly />
+                       <input  onChange={(e) => {reportcol = e.target.value}} style={input_style} name="reportcol" required placeholder="input runtime sheet column">
                        </input>
                    </div>
                    <div style={button_container_style}>
@@ -183,8 +189,12 @@ export default function UpdateFieldsComp() {
                 </div>
                 <div style={form_container_style}>
                    <div style={input_container_style} className="receiptlineinfo">
-                       <label style={label_container_style} htmlFor="receiptline">Tag: </label>
-                       <input  onChange={(e) => {receiptline = e.target.value}} style={input_style} name="receiptline" required>
+                       <div>Tag:</div>
+                        <input
+                            style={{marginBottom: '0.5em', width:'80%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.tlog_fileinfo.receipt_image || ''}
+                        readOnly />
+                       <input  onChange={(e) => {receiptline = e.target.value}} style={input_style} name="receiptline" required placeholder="input the new tag">
                        </input>
                    </div> 
                    <div style={button_container_style}>
@@ -193,7 +203,27 @@ export default function UpdateFieldsComp() {
                 </div>
                 <div style={form_container_style}>
                    <div style={input_container_style} className="tlognameinfo">
-                       <label style={label_container_style} htmlFor="tlogleading">Tlog [______]_1883_002_4784.xml: </label>
+                        Tlog:
+                        <input
+                            style={{marginBottom: '0.5em', width:'27%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.tlog_filename.leading_name || ''}
+                        readOnly />
+                        _
+                        <input
+                            style={{marginBottom: '0.3em', width:'13%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.tlog_filename.a || ''}
+                        readOnly />
+                        _
+                        <input
+                            style={{marginBottom: '0.3em', width:'13%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.tlog_filename.b || ''}
+                        readOnly />
+                        _
+                        <input
+                            style={{marginBottom: '0.5em', width:'23%',minHeight:'10px',boxSizing:'border-box',border:'1px solid #108ee9',paddingTop:'0.2em',paddingBottom:"0.2em",paddingLeft:"0.3em", paddingRight:"0.3em"}}
+                            value={props.tlog_filename.c || ''}
+                        readOnly />
+                        .xml
                        <input onChange={(e) => {tlogname = e.target.value}} style={input_style} name="tlogleading" required>
                        </input>
                    </div> 

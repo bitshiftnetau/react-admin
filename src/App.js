@@ -14,6 +14,7 @@ import TlogPathFinderSectionMemo from "./components/sections/TlogPathfinderSecti
 
 import JsonPathPickerComp from "./components/JsonPathPicker/JsonPathPickerComp";
 
+import config from "./config"
 
 import SideNav, {
   Toggle,
@@ -45,46 +46,6 @@ function App() {
   // 1. the original state, denoted below by 'state'
   // 2. a function to alter the state, denoted below by 'setState'
   // these items can be called whatever we want, they just need to be defined
-
-  const [user, setUser] = useState("Aidan Millar-Powell");
-  const [tier, setTier] = useState("paid");
-
-  const [units, setUnits] = useState(state.units);
-  const [sections, setSections] = useState(state.sections);
-
-  const [navbarState, setNavbarState] = useState(state_data.navbar);
-  const [sectionState, setSectionState] = useState(state_data.section_state);
-
-  /*
-  const [jsonPickerState, setJsonPickerState] = useState(json_picker_state);
-  const [jsonPickerProps, setJsonPickerProps] = useState(json_picker_props);
-  */
-
-  var addUnit = (unitnum, unitname, unitcontent) => {
-    const newUnits = [
-      ...units,
-      { name: unitname, number: unitnum, content: unitcontent }
-    ];
-    setUnits(newUnits);
-
-    //FIXME: add calls to database here
-  };
-
-  const deleteUnit = index => {
-    const newUnitsList = [...units];
-    newUnitsList.splice(index, 1);
-    setUnits(newUnitsList);
-
-    //FIXME: add calls to database here
-  };
-
-  const shiftSection = () => {
-    setSectionState({
-      style:{
-        marginLeft: "16em"
-      }
-    });
-  }
 
   return (
     <div className="App">

@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 import { Toast, Button } from 'react-bootstrap'
 
-export default function ReponseToast() {
-    const [show, setShow] = useState(false);
-  
+export default function ReponseToast(props) {
+
+  const toast_style = {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  }
+
     return (
     <div>
-        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+        <Toast style={toast_style} onClose={props.close} show={props.show} delay={3000}>
             <Toast.Header>
               <img
                 src="holder.js/20x20?text=%20"
@@ -18,7 +23,6 @@ export default function ReponseToast() {
             </Toast.Header>
             <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
         </Toast>        
-        <Button onClick={() => setShow(true)}>Show Toast</Button>
     </div>
     );
   }

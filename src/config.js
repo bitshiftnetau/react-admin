@@ -11,7 +11,8 @@ module.exports = (
                 "resultcols": "/resultcols",
                 "xml": "/xml",
                 "json": "/json",
-                "config": "/config"
+                "config": "/config",
+                "config_delete": "/config_delete"
             } 
         }
     }
